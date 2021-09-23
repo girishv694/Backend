@@ -1,0 +1,37 @@
+
+//Equal to movie_name
+db.movies.find({movie_name:{$eq: 'Sadella'}}).pretty()
+
+//Not equal to movie_name
+db.movies.find({movie_name:{$ne: 'Sadella'}}).pretty()
+
+//All movies greater than and greater than eqaul to budget
+db.movies.find({$and:[{budget:{$gt:15000}},{budget:{$gte:18000}}]}).pretty()
+
+
+//All movies lesser than and lesser than equal to budget
+db.movies.find({$and:[{budget:{$lt:15000}},{budget:{$lte:18000}}]}).pretty()
+
+//All movies that are produced after 2000 with budget greater than 10000
+db.movies.find({$and:[{production_year:{$gt:2000}},{budget:{$gt:10000}}]}).pretty()
+
+//All movies that are produced after 2000 or budget greater than 10000
+db.movies.find({$or:[{production_year:{$gt:2000}},{budget:{$gt:10000}}]}).pretty()
+
+//all movies that are neither produced after 2000 nor with budget greater than 10000.
+db.movies.find({$and:[{production_year:{$lt:2000}},{budget:{$lt:10000}}]}).pretty()
+
+//all movies that are not produced in 2000 or they do not have budget of 10000
+db.movies.find({$or:[{production_year:{$nin:[2000]}},{budget:{$nin:[10000]}}]}).pretty()
+
+//all movies that were produced from 2000 to 2010.
+db.movies.find({production_year:{$in:[2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010]}}).pretty()
+
+//Sort all movies descending based on the production year and if the year is same then alphabetically for their movie_names
+db.movies.find().sort({production_year:-1},{movie_name:1}).pretty()
+
+//skip first 10 movies and fetch next 5 movies
+db.movies.find().sort({production_year:-1},{movie_name:1}).skip(10).limit(5).pretty()
+
+//remove movie genre from the first 10 movies in query 10.
+db.movies.update({}, {$unset: {movie_genre:1}}, false, true).limit(10)
